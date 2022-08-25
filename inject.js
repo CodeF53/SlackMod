@@ -3,7 +3,7 @@ if (document != undefined) {
 // make a new style element for our custom CSS
 let styleSheet = document.createElement("style")
 // set default contents of Custom CSS
-styleSheet.innerText = `/*Write Custom CSS here!*//* Improve Legibility of Custom CSS Area */.p-prefs_dialog__panel textarea {    font-family: Monaco, Menlo, Consolas, CourierNew, monospace!important;    font-size: 12px;    width: 100%;    height: calc(100% - 0.5rem);    background-color: #1c1c1c;    white-space: nowrap;}/* Increase width of Preferences to allow for more code width */body > div.c-sk-modal_portal > div > div {    max-width: 100%!important;}`
+styleSheet.innerText = `/*Write Custom CSS here!*//* Improve Legibility of Custom CSS Area */.p-prefs_dialog__panel textarea {    font-family: Monaco, Menlo, Consolas, CourierNew, monospace!important;    font-size: 12px;    /* Make editor fill Preferences panel */    width: 100%;     height: calc(100% - 0.5rem);    /* disable text wrapping */    white-space: nowrap;    /* make background of editor darker */    background-color: #1c1c1c;}/* Increase width of Preferences to allow for more code width */body > div.c-sk-modal_portal > div > div {    max-width: 100%!important;}`
 // give it an id to make it easier to query
 // the document for this stylesheet later
 styleSheet.id = "SlackMod-Custom-CSS"
