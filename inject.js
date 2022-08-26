@@ -2,8 +2,14 @@ if (document != undefined) {
 
 // make a new style element for our custom CSS
 let styleSheet = document.createElement("style")
-// set default contents of Custom CSS
-styleSheet.innerText = `/*Write Custom CSS here!*//* Improve Legibility of Custom CSS Area */.p-prefs_dialog__panel textarea {    font-family: Monaco, Menlo, Consolas, CourierNew, monospace!important;    font-size: 12px;    /* Make editor fill Preferences panel */    width: 100%;     height: calc(100% - 0.5rem);    /* disable text wrapping */    white-space: nowrap;    /* make background of editor darker */    background-color: #1c1c1c;}/* Increase width of Preferences to allow for more code width */body > div.c-sk-modal_portal > div > div {    max-width: 100%!important;}`
+if (window.localStorage.getItem("slackMod-CSS") == null) {
+    // use default CSS
+    styleSheet.innerText = "/*Write Custom CSS here!*/"
+    window.localStorage.setItem("slackMod-CSS", "/*Write Custom CSS here!*/")
+} else {
+    // get saved CSS
+    styleSheet.innerText = window.localStorage.getItem("slackMod-CSS")
+}
 // give it an id to make it easier to query
 // the document for this stylesheet later
 styleSheet.id = "SlackMod-Custom-CSS"
@@ -11,9 +17,19 @@ styleSheet.id = "SlackMod-Custom-CSS"
 document.head.appendChild(styleSheet)
 
 // method to quickly change css
-const updateCustomCSS = newCSS => { document.querySelector("#SlackMod-Custom-CSS").innerText = newCSS; }
+const updateCustomCSS = newCSS => { 
+    // update in storage
+    window.localStorage.setItem("slackMod-CSS", newCSS);
+    // update currently applied CSS
+    document.querySelector("#SlackMod-Custom-CSS").innerHTML = "" 
+    document.querySelector("#SlackMod-Custom-CSS").appendChild(document.createTextNode(newCSS)); 
+}
 // method to quickly get inner css
-const getCustomCSS = () => { return document.querySelector("#SlackMod-Custom-CSS").innerText}
+const getCustomCSS = () => { 
+    // not sure which is better
+    // return document.querySelector("#SlackMod-Custom-CSS").innerHTML
+    return window.localStorage.getItem("slackMod-CSS")
+}
 
 // has bug
 // select custom css, select any other tab => error thrown
@@ -33,28 +49,31 @@ function addSettingsTab() {
         // visually select new tab by adding class
         customTab.classList = customTab.classList.toString() + " " + activeClass
 
-        // a big proper editor
-        let cssEditor = document.createElement("textarea")
-        cssEditor.setAttribute("rows", "33")
-        cssEditor.setAttribute("cols", "60")
-        // set content from current CSS
-        cssEditor.value = getCustomCSS()
-        // on new chars added
-        cssEditor.addEventListener("input", ()=>{
-            // update current CSS
-            updateCustomCSS(cssEditor.value)
-        })
-        
-        // make pressing tab add indent
-        cssEditor.addEventListener("keydown", (event) => {
-            if (event.code == "Tab") {
-                event.preventDefault();
-
-            }
-        })
+        /* Based on GooseMod CustomCSS, which is under the MIT License
+        https://github.com/GooseMod-Modules/CustomCSS/blob/64969856598a2cc2980988046e0ff266d64fa943/index.js#L35-L65 */
+        // add div for ace to be in
+        const cssEditor = document.createElement('div');
+        // give it an id so ace can see it
+        cssEditor.id = 'slackMod-editor';
+        // size it to user's window
+        cssEditor.style.width = "100%";
+        cssEditor.style.height = "calc(100% - 0.5rem)";
+        // set its default value
+        cssEditor.innerHTML = getCustomCSS();
 
         // add editor to settings content pane
         document.querySelector(".p-prefs_dialog__panel").replaceChildren(cssEditor)
+
+        // point ace to the id we gave our div
+        const editor = ace.edit('slackMod-editor');
+        const session = editor.getSession();
+        // configure syntax highlighting, theme
+        session.setMode('ace/mode/css'); // Set lang to CSS
+        editor.setTheme('ace/theme/dracula'); // Set theme to Dracula
+        // when we change the content of it, update css
+        session.on('change', () => {
+            updateCustomCSS(session.getValue());
+        });
     })
 
     settingsTabList.appendChild(customTab)
@@ -67,7 +86,7 @@ document.addEventListener("click", (event) => {
             if (document.querySelector(".p-prefs_dialog__menu") != null) {
                 addSettingsTab()
             }
-        }, 500);
+        }, 50);
     }
 })
 }
