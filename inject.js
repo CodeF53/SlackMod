@@ -47,6 +47,10 @@ function addSettingsTab() {
     customTab.classList = "c-button-unstyled c-tabs__tab js-tab c-tabs__tab--full_width"
 
     customTab.addEventListener("click", ()=>{
+        // increase width of window for more code room
+        document.querySelector(`div[aria-label="Preferences"]`).style["max-width"] = "none";
+        document.querySelector(`div[aria-label="Preferences"]`).style["width"] = "100%";
+
         const activeClass = "c-tabs__tab--active"
         // visually deselect old tab by removing class
         let activeTab = settingsTabList.querySelector("."+activeClass)
