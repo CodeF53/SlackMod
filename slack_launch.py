@@ -34,8 +34,11 @@ match system():
             print(ERR_SLACK_NOT_FOUND)
             exit()
     case "Darwin": # Mac
-        input("Your install is on mac, you're not supported yet\n\tpress any key to exit")
-        exit()
+        # check if slack is in the location 
+        slack_location = "/Applications/Slack.app"
+        if (not exists(slack_location)):
+            input(ERR_SLACK_NOT_FOUND)
+            exit()
     case _:
         input("Your install isn't linux, windows, or mac, you're not supported\n\tpress any key to exit")
         exit()
