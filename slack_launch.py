@@ -59,7 +59,7 @@ scripts = []
 # or the Current Working Directory
 cwd = getcwd()
 # make the libs folder if it doesn't exist
-libsFolder = f"{cwd}\\libs"
+libsFolder = f"{cwd}/libs"
 if not exists(libsFolder):
     makedirs(libsFolder)
 # array of libraries to install
@@ -84,10 +84,10 @@ for libURL in libURLs:
     # add path to file to list of scripts to inject
     # we use realpath() here to get the fill directory to the file
     # because sometimes electron inject gets screwy with relative files
-    scripts.append(f"{libsFolder}\\{fileName}")
+    scripts.append(f"{libsFolder}/{fileName}")
 # add our own code as the last entry in scripts
 # so all the scripts are loaded once our code runs
-scripts.append(f"{cwd}\\inject.js")
+scripts.append(f"{cwd}/inject.js")
 
 print(f"\ncalling electron injector with args:")
 print(f"\tslack location:{slack_location}")
