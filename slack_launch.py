@@ -1,6 +1,7 @@
 from electron_inject import inject
 from wget import download as wgetDownload
-from os import rename, getcwd, makedirs, walk, getenv, system
+from os import rename, getcwd, makedirs, walk, getenv
+from os import system as sysrun
 from time import sleep
 from os.path import exists
 from platform import system
@@ -48,7 +49,7 @@ match system():
 def download(url):
     if (system()=="Darwin"):
         fileName = url.split("/")[-1]
-        system(f"curl -o { fileName } \"{url}\"")
+        sysrun(f"curl -o { fileName } \"{url}\"")
         sleep(0.1)
     else:
         wgetDownload(url)
