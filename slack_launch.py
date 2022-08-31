@@ -1,37 +1,45 @@
-from ensurepip import version
 from electron_inject import inject
 from wget import download
-from os import rename, getcwd, makedirs
-from os import name as osname
-from os.path import expanduser
+from os import rename, getcwd, makedirs, walk, getenv
 from os.path import exists
-import os
+from platform import system
+from pkg_resources import parse_version
 
-# by default have correct install path for linux
-slack_location = "/usr/lib/slack/slack"
-# if system is windows
-if (osname == "nt"):
-    # %appdata% location of slack
-    slack_location = os.getenv('LOCALAPPDATA') + "\\" + "slack"
-    # check if slack is installed
-    if (exists(slack_location)):
-        # get latest slack version
-        # by iterating through all subdirectorys
-        # and getting the one with the newest slack.exe
-        latestCreatedTime = 0
-        biggestVersionName = ""
-        for subdir in next(os.walk(slack_location))[1]:
-            # filter out non "app-version" dirs
-            if ("app-" in subdir):
-                createdTime = os.stat(slack_location+"\\slack.exe").st_ctime
-                if (createdTime>latestCreatedTime):
-                    latestCreatedTime = createdTime
-                    biggestVersionName = subdir
-        slack_location = slack_location + "\\" + biggestVersionName + "\\slack.exe"
-    else:
-        # yell at user
-        print("Could not find your slack installation")
-print(slack_location)
+# general error to print when slack cant be found
+ERR_SLACK_NOT_FOUND =  "Could not find Slack install! Please:\n\t- install Slack\n\t- open a Github issue so I can support your install location\nPress Enter to exit."
+# initialize slack location var
+slack_location = ""
+# find slack location based on system user is running
+match system():
+    case "Linux":
+        # check if slack is in the location 
+        slack_location = "/usr/lib/slack/slack"
+        if (not exists(slack_location)):
+            input(ERR_SLACK_NOT_FOUND)
+            exit()
+    case "Windows":
+        # Check if the %appdata% location of slack exists
+        slack_location = getenv('LOCALAPPDATA') + "\\slack"
+        if (exists(slack_location)):
+            # Slack keeps old versions for some reason, we want to inject into the latest one
+            # get an array of all the subdirectories that have app-
+            # ['app-4.9.0', 'app-4.26.13', 'app-4.26.3', 'app-4.28.171']
+            subDirs = list(filter(lambda dir: "app-" in dir, next(walk(slack_location))[1]))
+            # array of comparable "LegacyVersion" objects in the same order as subDirs
+            versions = list(map(parse_version, subDirs))
+            # The full path to the latest version of Slack's slack.exe
+            slack_location = slack_location + subDirs[versions.index(max(versions))] + "\\slack.exe"
+        else:
+            # If Slack is not found in windows appdata
+            print(ERR_SLACK_NOT_FOUND)
+            exit()
+    case "Darwin": # Mac
+        input("Your install is on mac, you're not supported yet\n\tpress any key to exit")
+        exit()
+    case _:
+        input("Your install isn't linux, windows, or mac, you're not supported\n\tpress any key to exit")
+        exit()
+
 
 # scripts we will inject are added to this array
 scripts = []
