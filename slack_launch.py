@@ -1,6 +1,7 @@
 from electron_inject import inject
-from wget import download
-from os import rename, getcwd, makedirs, walk, getenv
+from wget import download as wgetDownload
+from os import rename, getcwd, makedirs, walk, getenv, system
+from time import sleep
 from os.path import exists
 from platform import system
 from pkg_resources import parse_version
@@ -43,6 +44,14 @@ match system():
         input("Your install isn't linux, windows, or mac, you're not supported\n\tpress any key to exit")
         exit()
 
+# macOS is stupid and doesn't like wget's download
+def download(url):
+    if (system()=="Darwin"):
+        fileName = url.split("/")[-1]
+        system(f"curl -o { fileName } \"{url}\"")
+        sleep(0.1)
+    else:
+        wgetDownload(url)
 
 # scripts we will inject are added to this array
 scripts = []
