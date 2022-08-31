@@ -37,7 +37,7 @@ match system():
             exit()
     case "Darwin": # Mac
         # check if slack is in the location 
-        slack_location = "/Applications/Slack.app"
+        slack_location = "/Applications/Slack.app/Contents/MacOS/Slack"
         if (not exists(slack_location)):
             input(ERR_SLACK_NOT_FOUND)
             exit()
