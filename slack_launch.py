@@ -30,7 +30,7 @@ match system():
             # array of comparable "LegacyVersion" objects in the same order as subDirs
             versions = list(map(parse_version, subDirs))
             # The full path to the latest version of Slack's slack.exe
-            slack_location = slack_location + subDirs[versions.index(max(versions))] + "\\slack.exe"
+            slack_location = slack_location + "\\" + subDirs[versions.index(max(versions))] + "\\slack.exe"
         else:
             # If Slack is not found in windows appdata
             print(ERR_SLACK_NOT_FOUND)

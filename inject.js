@@ -5,7 +5,7 @@ let styleSheet = document.createElement("style")
 if (window.localStorage.getItem("slackMod-CSS") == null) {
     // use default CSS
     styleSheet.innerText = "/*Write Custom CSS here!*/"
-    window.localStorage.setItem("slackMod-CSS", "/*Write Custom CSS here!*/")
+    window.localStorage.setItem("slackMod-CSS", "/* make CSS editor span whole height of preferences modal */\ndiv.ace_content { height: 100%!important; }\n/*Write Custom CSS here!*/\n")
 } else {
     // get saved CSS
     styleSheet.innerText = window.localStorage.getItem("slackMod-CSS")
@@ -47,10 +47,6 @@ function addSettingsTab() {
     customTab.classList = "c-button-unstyled c-tabs__tab js-tab c-tabs__tab--full_width"
 
     customTab.addEventListener("click", ()=>{
-        // increase width of window for more code room
-        document.querySelector(`div[aria-label="Preferences"]`).style["max-width"] = "none";
-        document.querySelector(`div[aria-label="Preferences"]`).style["width"] = "100%";
-
         const activeClass = "c-tabs__tab--active"
         // visually deselect old tab by removing class
         let activeTab = settingsTabList.querySelector("."+activeClass)
@@ -80,9 +76,14 @@ function addSettingsTab() {
         session.setMode('ace/mode/css'); // Set lang to CSS
         editor.setTheme('ace/theme/dracula'); // Set theme to Dracula
         // when we change the content of it, update css
-        session.on('change', () => {
-            updateCustomCSS(session.getValue());
-        });
+        session.on('change', () => { updateCustomCSS(session.getValue()); });
+
+        // hardcoded styling for CSS Tab:
+        // increase width and height of preferences modal for more code room
+        ["max-width","width","max-height","height"].forEach(
+            style => document.querySelector(`div[aria-label="Preferences"]`).style[style] = "100%")
+        // smoothly expand preferences modal
+        document.querySelector(`div[aria-label="Preferences"]`).style["transition"] = "500ms ease all"
     })
 
     settingsTabList.appendChild(customTab)
