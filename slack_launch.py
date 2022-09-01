@@ -25,9 +25,9 @@ try:
                 print(f'\tkilling instance - {args}')
                 process.terminate()
         except Exception:
-            print(f"{format_exc()}")
+            print(f"\t\tPermission Denied")
 except Exception:
-    print(f"{format_exc()}")
+    print(f"failed to get processes to kill")
 
 # general error to print when slack cant be found
 ERR_SLACK_NOT_FOUND =  "Could not find Slack install! Please:\n\t- install Slack\n\t- open a Github issue so I can support your install location\nPress Enter to exit."
