@@ -20,6 +20,15 @@ Slack is basically Discord but worse and targeted at professionals instead of ga
 If Slack is worse, why isn't there any mods for it?
 
 ## Usage
-0. Make sure you have the project's dependencies: Python 3, [Electron Inject](https://pypi.org/project/electron-inject/), [wget](https://pypi.org/project/wget/)
-1. Make sure slack is fully closed
-2. Run `slack-launch.py`
+1. Install [Python 3](https://www.python.org/downloads/)
+2. `git clone https://github.com/CodeF53/SlackMod` and `cd SlackMod`
+
+Or download the and extract source code 
+
+![under the green code button, click download zip](https://i.imgur.com/vUtt1im.png) 
+
+Then open a command prompt inside
+
+3. `python3 -m pip install -r requirements.txt`
+4. Make sure slack is fully closed
+5. `python3 slack_launch.py`
