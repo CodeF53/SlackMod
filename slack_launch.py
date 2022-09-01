@@ -6,6 +6,28 @@ from time import sleep
 from os.path import exists
 from platform import system
 from pkg_resources import parse_version
+from psutil import process_iter
+from traceback import format_exc
+
+# Kill Slack
+# Mac and Linux have no extension on executables
+process_name = "slack"
+if (system()=="Windows"):
+    process_name = "slack.exe"
+try:
+    print(f'Killing Slack Processes') 
+    for process in process_iter():
+        try:
+            if process_name == process.name() or process_name in process.cmdline():
+                args = process.cmdline()
+                if (len(args) > 4):
+                    args = args[0:3]
+                print(f'\tkilling instance - {args}')
+                process.terminate()
+        except Exception:
+            print(f"{format_exc()}")
+except Exception:
+    print(f"{format_exc()}")
 
 # general error to print when slack cant be found
 ERR_SLACK_NOT_FOUND =  "Could not find Slack install! Please:\n\t- install Slack\n\t- open a Github issue so I can support your install location\nPress Enter to exit."

@@ -30,5 +30,4 @@ Or download the and extract source code
 Then open a command prompt inside
 
 3. `python3 -m pip install -r requirements.txt`
-4. Make sure slack is fully closed
-5. `python3 slack_launch.py`
+4. `python3 slack_launch.py`
