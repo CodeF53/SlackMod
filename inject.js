@@ -84,6 +84,8 @@ function addSettingsTab() {
             style => document.querySelector(`div[aria-label="Preferences"]`).style[style] = "100%")
         // smoothly expand preferences modal
         document.querySelector(`div[aria-label="Preferences"]`).style["transition"] = "500ms ease all"
+        // make the editor actually fill the damn thing
+        setTimeout(()=>{editor.resize()}, 500);
     })
 
     settingsTabList.appendChild(customTab)

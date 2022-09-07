@@ -27,7 +27,7 @@ try:
         except Exception:
             print(f"\t\tPermission Denied")
 except Exception:
-    print(f"failed to get processes to kill")
+    print(f"Failed to get processes to kill, assuming Slack isn't open")
 
 # general error to print when slack cant be found
 ERR_SLACK_NOT_FOUND =  "Could not find Slack install! Please:\n\t- install Slack\n\t- open a Github issue so I can support your install location\nPress Enter to exit."
