@@ -15,7 +15,7 @@ process_name = "slack"
 if (system()=="Windows"):
     process_name = "slack.exe"
 try:
-    print(f'Killing Slack Processes') 
+    print(f'Killing Slack Processes')
     for process in process_iter():
         try:
             if process_name == process.name() or process_name in process.cmdline():
@@ -36,7 +36,7 @@ slack_location = ""
 # find slack location based on system user is running
 match system():
     case "Linux":
-        # check if slack is in the location 
+        # check if slack is in the location
         slack_location = "/usr/lib/slack/slack"
         if (not exists(slack_location)):
             input(ERR_SLACK_NOT_FOUND)
@@ -58,7 +58,7 @@ match system():
             print(ERR_SLACK_NOT_FOUND)
             exit()
     case "Darwin": # Mac
-        # check if slack is in the location 
+        # check if slack is in the location
         slack_location = "/Applications/Slack.app/Contents/MacOS/Slack"
         if (not exists(slack_location)):
             input(ERR_SLACK_NOT_FOUND)
@@ -117,4 +117,4 @@ print(f"\tslack location:{slack_location}")
 print(f"\tscripts:")
 for script in scripts: print(f"\t\t{script}")
 
-inject(slack_location, devtools=False, timeout=60000, scripts=scripts) 
+inject(slack_location, devtools=False, timeout=60000, scripts=scripts)
