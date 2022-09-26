@@ -3,8 +3,8 @@ if (document != undefined) {
 const clickNodeBySelector = (selector) => document.querySelector(selector).dispatchEvent(new Event("click", {bubbles:true}))
 
 function tryTillTrue(expression, callback, timeout = 1) {
-    setTimeout(()=>{ 
-        if (expression()) { callback() } 
+    setTimeout(()=>{
+        if (expression()) { callback() }
         else { tryTillTrue(expression,callback)}
     }, timeout)
 }
@@ -20,11 +20,11 @@ styleSheet.id = "SlackMod-Custom-CSS"
 document.head.appendChild(styleSheet)
 
 // method to quickly change css
-const updateCustomCSS = newCSS => { 
+const updateCustomCSS = newCSS => {
     window.localStorage.setItem("slackMod-CSS", newCSS); // update in storage
     // update currently applied CSS
-    document.querySelector("#SlackMod-Custom-CSS").innerHTML = "" 
-    document.querySelector("#SlackMod-Custom-CSS").appendChild(document.createTextNode(newCSS)); 
+    document.querySelector("#SlackMod-Custom-CSS").innerHTML = ""
+    document.querySelector("#SlackMod-Custom-CSS").appendChild(document.createTextNode(newCSS));
 }
 // method to quickly get inner css
 const getCustomCSS = () => { return window.localStorage.getItem("slackMod-CSS") }
@@ -36,7 +36,7 @@ function addSettingsTab() {
         // Make the button
         customTab = document.createElement("button")
         // Proper Label and Icon
-        customTab.innerHTML = 
+        customTab.innerHTML =
             `<div class="c-tabs__tab_icon--left" data-qa="tabs_item_render_icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             </div>
@@ -132,7 +132,7 @@ function addSettingsTab() {
 }
 
 document.addEventListener("click", (event) => {
-    let element = event.target 
+    let element = event.target
     if (element.classList[0]=="c-menu_item__label" && element.innerHTML == "Preferences" && event.isTrusted) {
         addSettingsTab()
     }
@@ -142,7 +142,7 @@ document.addEventListener("keyup", ({ code, ctrlKey, shiftKey, metaKey, altKey }
     if (code === "F12" || (ctrlKey && shiftKey && code === "KeyI") || (metaKey && altKey && code === "KeyI")) {
         // save contents of chat editor
         let oldText = document.querySelector(".ql-editor").innerText
-        // type and send slackdevtools command 
+        // type and send slackdevtools command
         document.querySelector(".ql-editor").innerText = "/slackdevtools"
         setTimeout(()=>{clickNodeBySelector(`[aria-label="Send now"]`)}, 1)
         // restore old contents of chat editor
