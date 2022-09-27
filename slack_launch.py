@@ -13,9 +13,9 @@ match system():
   case "Windows":
     sysrun("taskkill /im slack.exe")
   case "Linux":
-    sysrun("ps ax | grep \"slack\" | grep -v \"grep\|python\|mod\" | awk '{print $1}' | xargs `kill -9")
+    sysrun("ps ax | grep \"slack\" | grep -v \"grep\|python\|mod\" | awk '{print $1}' | xargs kill -9")
   case "Darwin":
-    sysrun("ps ax | grep \"slack\" | grep -v \"grep\|python\|mod\" | awk '{print $1}' | xargs `kill -9")
+    sysrun("ps ax | grep \"slack\" | grep -v \"grep\|python\|mod\" | awk '{print $1}' | xargs kill -9")
     input("python cant automatically kill slack in macos, please ctrl+q slack then press enter")
 
 
