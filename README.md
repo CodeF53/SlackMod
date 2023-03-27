@@ -1,5 +1,9 @@
-# SlackMod
+# SlackMod [archive]
 Adds a custom CSS menu to slack
+
+I stopped using slack after I graduated from the trade school I was attending while writing this.
+
+I don't have any plans to further maintain this project. In future if I end up using slack or some other poorly styled electron app again I will instead try and fork [BeautifulDiscord](https://github.com/leovoel/BeautifulDiscord) to be more generally applicable to all electron apps.
 
 ## About:
 A very work in progress client mod for slack.
